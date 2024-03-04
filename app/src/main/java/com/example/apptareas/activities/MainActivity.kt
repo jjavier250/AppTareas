@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.appcompat.widget.AppCompatButton
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.apptareas.R
@@ -21,7 +22,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var adapter:TareasAdapter
     lateinit var listaTareas: List<Task>
     lateinit var txtnueva:TextView
-    lateinit var imagenbotonadd:ImageButton
+    lateinit var imagenbotonadd: AppCompatButton
 
     val taskDAO = TaskDAO(this)
 
@@ -53,10 +54,12 @@ class MainActivity : AppCompatActivity() {
 
        //nueva tarea
         txtnueva=findViewById(R.id.txtnueva)
+        imagenbotonadd=findViewById(R.id.txtnueva)
 
         imagenbotonadd.setOnClickListener(){
            // LLamar a la otra pantalla
-          //  val intent = Intent(this, MainActivityDescripcion::class.java)
+           val intent = Intent(this, MainActivityinsertar::class.java)
+            startActivity(intent)
         }
 
 

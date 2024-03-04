@@ -25,15 +25,16 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="end">
-        <ImageButton
+
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/txtnueva"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/mas"
+            android:text="añadir"
             android:tooltipText="Añadir tarea"
-            >
+            />
 
-        </ImageButton>
+
 
     </LinearLayout>
 
