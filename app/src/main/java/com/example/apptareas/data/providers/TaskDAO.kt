@@ -49,6 +49,15 @@ class TaskDAO (context: Context) {
         db.close()
     }
 
+    fun deleteAll() {
+        val db = databaseManager.writableDatabase
+
+        val deletedRows = db.delete(Task.TABLE_NAME, null, null)
+        Log.i("DATABASE", "Todo borrado")
+
+        db.close()
+    }
+
     @SuppressLint("Range")
     fun find(id: Int): Task? {
         val db = databaseManager.writableDatabase

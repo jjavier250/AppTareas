@@ -26,15 +26,22 @@
         android:orientation="horizontal"
         android:gravity="end">
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/txtnueva"
+
+    <ImageButton
+        android:id="@+id/btnnueva"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/mas"
+        android:tooltipText="Añadir datos">
+    </ImageButton>
+
+        <ImageButton
+            android:id="@+id/btnborratodo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="añadir"
-            android:tooltipText="Añadir tarea"
-            />
-
-
+            android:src="@drawable/papeleratodo"
+            android:tooltipText="Borra toda la agenda">
+        </ImageButton>
 
     </LinearLayout>
 

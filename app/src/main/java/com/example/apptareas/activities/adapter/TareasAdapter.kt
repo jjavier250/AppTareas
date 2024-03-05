@@ -4,24 +4,28 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.apptareas.R
 import com.example.apptareas.data.providers.Task
 
 //  *********************************************** ADAPTER  ********************************************************
-class TareasAdapter(private var dataSet: List<Task> =listOf(), val onClickListener:(Int)->Unit) :
+class TareasAdapter(private var dataSet: List<Task> =listOf(), val onClickListener:(Int)->Unit,
+                    private val onclickcheck:(position:Int)->Unit,private val onclickpapelera:(position:Int)->Unit) :
     RecyclerView.Adapter<TareasAdapter.MiViewHolder>() {
 
     class MiViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val textView: TextView
         val checkhecho: CheckBox
+        val imagenpapelera:ImageButton
 
 
         init {
             // Define click listener for the ViewHolder's View
             textView = view.findViewById(R.id.txttarea)  // hace referencia el textview que esta en item_tareas
             checkhecho = view.findViewById(R.id.checkhecho)
+            imagenpapelera=view.findViewById(R.id.imagenpapelera)
         }
     }
 
@@ -36,6 +40,8 @@ class TareasAdapter(private var dataSet: List<Task> =listOf(), val onClickListen
     override fun onBindViewHolder(viewHolder: MiViewHolder, position: Int) {
 
         viewHolder.itemView.setOnClickListener{onClickListener(position)} // capturamos el click del control
+        viewHolder.imagenpapelera.setOnClickListener{onclickpapelera(position)} // capturamos el click del papelera
+        viewHolder.checkhecho.setOnClickListener{onclickcheck(position)}  // capturamos click de check
 
         val tarea:Task = dataSet[position]
 

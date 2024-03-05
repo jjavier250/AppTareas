@@ -19,13 +19,20 @@
         android:text="tarea"
         android:textSize="20dp"
         android:layout_marginLeft="10dp"
+
         />
 
     <CheckBox
         android:id="@+id/checkhecho"
-        android:layout_width="20dp"
+        android:layout_width="10dp"
         android:layout_height="50dp"
         android:layout_weight="1"
          />
+    <ImageButton
+        android:id="@+id/imagenpapelera"
+        android:layout_width="30dp"
+        android:layout_height="50dp"
+        android:src="@drawable/papelera"
+        />
 
 </LinearLayout>
