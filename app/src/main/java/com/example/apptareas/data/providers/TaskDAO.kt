@@ -16,6 +16,8 @@ class TaskDAO (context: Context) {
         var values = ContentValues()
         values.put(Task.COLUMN_NAME_TASK, task.tarea)
         values.put(Task.COLUMN_NAME_DONE, task.hecho)
+        values.put(Task.COLUMN_NAME_DESCRIPCION,task.descripcion)
+        values.put(Task.COLUMN_NAME_DIASEMANA,task.diaSemana)
 
         var newRowId = db.insert(Task.TABLE_NAME, null, values)
         Log.i("DATABASE", "New record id: $newRowId")
@@ -33,6 +35,8 @@ class TaskDAO (context: Context) {
         var values = ContentValues()
         values.put(Task.COLUMN_NAME_TASK, task.tarea)
         values.put(Task.COLUMN_NAME_DONE, task.hecho)
+        values.put(Task.COLUMN_NAME_DESCRIPCION,task.descripcion)
+        values.put(Task.COLUMN_NAME_DIASEMANA,task.diaSemana)
 
         var updatedRows = db.update(Task.TABLE_NAME, values, "${DatabaseManager.COLUMN_NAME_ID} = ${task.id}", null)
         Log.i("DATABASE", "Updated records: $updatedRows")
@@ -58,6 +62,15 @@ class TaskDAO (context: Context) {
         db.close()
     }
 
+
+    fun deleteRealizados() {
+        val db = databaseManager.writableDatabase
+
+        val deletedRows = db.delete(Task.TABLE_NAME, "hecho=true", null)
+        Log.i("DATABASE", "borrado las check,realizadas")
+
+        db.close()
+    }
     @SuppressLint("Range")
     fun find(id: Int): Task? {
         val db = databaseManager.writableDatabase
@@ -78,9 +91,11 @@ class TaskDAO (context: Context) {
             val id = cursor.getInt(cursor.getColumnIndex(DatabaseManager.COLUMN_NAME_ID))
             val taskName = cursor.getString(cursor.getColumnIndex(Task.COLUMN_NAME_TASK))
             val done = cursor.getInt(cursor.getColumnIndex(Task.COLUMN_NAME_DONE)) == 1
+            val taskdescripcion = cursor.getString(cursor.getColumnIndex(Task.COLUMN_NAME_DESCRIPCION))
+            val diaSemana=cursor.getString(cursor.getColumnIndex(Task.COLUMN_NAME_DIASEMANA))
             //Log.i("DATABASE", "$id -> Task: $taskName, Done: $done")
 
-            task = Task(id, taskName, done)
+            task = Task(id, taskName, done,taskdescripcion,diaSemana)
         }
 
         cursor.close()
@@ -109,9 +124,11 @@ class TaskDAO (context: Context) {
             val id = cursor.getInt(cursor.getColumnIndex(DatabaseManager.COLUMN_NAME_ID))
             val taskName = cursor.getString(cursor.getColumnIndex(Task.COLUMN_NAME_TASK))
             val done = cursor.getInt(cursor.getColumnIndex(Task.COLUMN_NAME_DONE)) == 1
+            val taskdescripcion = cursor.getString(cursor.getColumnIndex(Task.COLUMN_NAME_DESCRIPCION))
+            val diaSemana=cursor.getString(cursor.getColumnIndex(Task.COLUMN_NAME_DIASEMANA))
             //Log.i("DATABASE", "$id -> Task: $taskName, Done: $done")
 
-            val task: Task = Task(id, taskName, done)
+            val task: Task = Task(id, taskName, done,taskdescripcion,diaSemana)
             list.add(task)
         }
 

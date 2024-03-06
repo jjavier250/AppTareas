@@ -16,16 +16,19 @@ class TareasAdapter(private var dataSet: List<Task> =listOf(), val onClickListen
     RecyclerView.Adapter<TareasAdapter.MiViewHolder>() {
 
     class MiViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val textView: TextView
+        val txttarea: TextView
         val checkhecho: CheckBox
         val imagenpapelera:ImageButton
+
+        //val txtidtarea : TextView
 
 
         init {
             // Define click listener for the ViewHolder's View
-            textView = view.findViewById(R.id.txttarea)  // hace referencia el textview que esta en item_tareas
+            txttarea = view.findViewById(R.id.txttarea)  // hace referencia el textview que esta en item_tareas
             checkhecho = view.findViewById(R.id.checkhecho)
             imagenpapelera=view.findViewById(R.id.imagenpapelera)
+            //txtidtarea=view.findViewById(R.id.txtidtarea)
         }
     }
 
@@ -45,13 +48,14 @@ class TareasAdapter(private var dataSet: List<Task> =listOf(), val onClickListen
 
         val tarea:Task = dataSet[position]
 
-       // val drawable = viewHolder.textView.context.getDrawable(horoscopo.image)
-
+       // val drawable = viewHolder.textView.context.getDrawable(image)
         // a mi variable viewHolder le asigno al xml de la imagen y del text los valores
-        viewHolder.textView.text = tarea.tarea
-        //viewHolder.imageView.setImageDrawable(drawable)
 
+        viewHolder.txttarea.text =  tarea.tarea
+        //viewHolder.imageView.setImageDrawable(drawable)
         viewHolder.checkhecho.isChecked = tarea.hecho
+
+
 
     }
 

@@ -9,7 +9,7 @@ class DatabaseManager (context: Context) : SQLiteOpenHelper(context, DATABASE_NA
 
     companion object {
         const val DATABASE_NAME = "tareas.db"
-        const val DATABASE_VERSION = 1
+        const val DATABASE_VERSION = 4
         const val COLUMN_NAME_ID = "id"
 
         private const val SQL_CREATE_TABLE =
@@ -17,8 +17,8 @@ class DatabaseManager (context: Context) : SQLiteOpenHelper(context, DATABASE_NA
                     "$COLUMN_NAME_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
                     "${Task.COLUMN_NAME_TASK} TEXT," +
                     "${Task.COLUMN_NAME_DONE} BOOLEAN," +
-                    "fecha TEXT," +
-                    "diaSemana TEXT)"
+                    "${Task.COLUMN_NAME_DESCRIPCION} TEXT," +
+                    "${Task.COLUMN_NAME_DIASEMANA} TEXT)"
 
         private const val SQL_DELETE_TABLE = "DROP TABLE IF EXISTS ${Task.TABLE_NAME}"
     }

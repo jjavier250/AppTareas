@@ -13,6 +13,9 @@ import com.example.apptareas.data.providers.TaskDAO
 lateinit var txtnuevatarea:EditText
 lateinit var txtdescripcion:EditText
 lateinit var btngrabatarea: AppCompatButton
+lateinit var txtdiasemana:EditText
+lateinit var btncancelar:AppCompatButton
+
 
 
 class MainActivityinsertar : AppCompatActivity() {
@@ -32,14 +35,20 @@ class MainActivityinsertar : AppCompatActivity() {
         txtnuevatarea=findViewById(R.id.txtnuevatarea)
         txtdescripcion=findViewById(R.id.txtdescripcion)
         btngrabatarea=findViewById(R.id.btngrabatarea)
+        txtdiasemana=findViewById(R.id.txtdiasemana)
+        btncancelar=findViewById(R.id.btncancelar)
 
         btngrabatarea.setOnClickListener(){
             // Insertar
-            var tarea: Task = Task(-1, txtnuevatarea.text.toString(), false)
+            var tarea: Task = Task(-1, txtnuevatarea.text.toString(), false,txtdescripcion.text.toString(),txtdiasemana.text.toString())
             taskDAO.insert(tarea)
 
-            finish()
+                finish()
 
+        }
+
+        btncancelar.setOnClickListener(){
+            finish()
         }
 
     }

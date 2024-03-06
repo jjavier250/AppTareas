@@ -27,6 +27,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var txtnueva:TextView
     lateinit var btnnueva:ImageButton
     lateinit var btnborratodo:ImageButton
+    lateinit var btnborrarealizado:ImageButton
     //lateinit var imagenpapelera:ImageButton
 
 
@@ -67,6 +68,7 @@ class MainActivity : AppCompatActivity() {
         btnnueva=findViewById(R.id.btnnueva)
         //borrar todo
         btnborratodo=findViewById(R.id.btnborratodo)
+        btnborrarealizado=findViewById(R.id.btnborrarealizado)
 
         btnnueva.setOnClickListener(){
            // LLamar a la otra pantalla
@@ -81,7 +83,7 @@ class MainActivity : AppCompatActivity() {
 
             // Establecer el título y el mensaje
             builder.setTitle("Borrar agenda")
-            builder.setMessage("Esta seguro que desea eliminae la agenda")
+            builder.setMessage("¿Esta seguro que desea elimine la agenda completa?")
 
             builder.setPositiveButton("Aceptar") { dialog, which ->
                 // Acción a realizar cuando se presiona el botón Aceptar
@@ -106,7 +108,35 @@ class MainActivity : AppCompatActivity() {
         }
 
 
+        btnborrarealizado.setOnClickListener(){
+            // Crear AlertDialog
+            val builder = AlertDialog.Builder(this)
 
+            // Establecer el título y el mensaje
+            builder.setTitle("Borrar tareas realizadas")
+            builder.setMessage("¿Desea borrar las tareas realizadas?")
+
+            builder.setPositiveButton("Aceptar") { dialog, which ->
+                // Acción a realizar cuando se presiona el botón Aceptar
+
+                taskDAO.deleteRealizados()
+                Toast.makeText(this, "Taras realizadas borradas", Toast.LENGTH_SHORT).show()
+                onResume()
+
+                dialog.dismiss()
+            }
+
+            // Agregar botón negativo
+            builder.setNegativeButton("Cancelar") { dialog, which ->
+                // Acción a realizar cuando se presiona el botón Cancelar
+                // Por ejemplo, puedes realizar alguna acción o cerrar el diálogo
+                dialog.dismiss()
+            }
+
+            // Mostrar AlertDialog
+            val dialog: AlertDialog = builder.create()
+            dialog.show()
+        }
 
     }
 
@@ -130,9 +160,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun llamarPantallaClick(position: Int) {
 
+        var task: Task = listaTareas[position]
 
         val intent = Intent(this, MainActivityModificar::class.java)
-        intent.putExtra("ID_TABLA",position.toString())
+        intent.putExtra("ID_TABLA",task.id)
+
         startActivity(intent)
 
     }

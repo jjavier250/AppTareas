@@ -11,10 +11,19 @@
         android:layout_height="50dp"
         android:src="@drawable/lapiz"
         />
+    <!--<TextView
+        android:id="@+id/txtidtarea"
+        android:layout_width="10dp"
+        android:layout_height="50dp"
+        android:text="tarea"
+        android:textSize="20dp"
+        android:layout_marginLeft="10dp"
 
+        />
+        -->
     <TextView
         android:id="@+id/txttarea"
-        android:layout_width="210dp"
+        android:layout_width="230dp"
         android:layout_height="50dp"
         android:text="tarea"
         android:textSize="20dp"
@@ -28,6 +37,8 @@
         android:layout_height="50dp"
         android:layout_weight="1"
          />
+
+
     <ImageButton
         android:id="@+id/imagenpapelera"
         android:layout_width="30dp"
