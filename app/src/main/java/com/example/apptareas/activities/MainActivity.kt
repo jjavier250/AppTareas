@@ -83,7 +83,7 @@ class MainActivity : AppCompatActivity() {
 
             // Establecer el título y el mensaje
             builder.setTitle("Borrar agenda")
-            builder.setMessage("¿Esta seguro que desea elimine la agenda completa?")
+            builder.setMessage("¿Esta seguro que desea eliminar la agenda completa?")
 
             builder.setPositiveButton("Aceptar") { dialog, which ->
                 // Acción a realizar cuando se presiona el botón Aceptar
