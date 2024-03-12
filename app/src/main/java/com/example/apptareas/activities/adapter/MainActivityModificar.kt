@@ -71,6 +71,8 @@ class MainActivityModificar : AppCompatActivity() {
         txtmodificatarea.setText(tarea.tarea)
         txtdescripcion.setText(tarea.descripcion)
         txtdiasemana.setText(tarea.diaSemana)
+        // añadimos marcado a la lista de los dias de la semana del que tenemos grabado en BD
+        spinermod.setSelection(diasSemana.indexOf(tarea.diaSemana))
 
 
         btngrabatarea.setOnClickListener() {
@@ -85,6 +87,7 @@ class MainActivityModificar : AppCompatActivity() {
             tarea.tarea = txtmodificatarea.text.toString()
             tarea.descripcion = txtdescripcion.text.toString()
             tarea.diaSemana = txtdiasemana.text.toString()
+
 
             taskDAO.update(tarea)
 
@@ -108,14 +111,6 @@ class MainActivityModificar : AppCompatActivity() {
                 // Maneja la selección del usuario aquí
                 selectedDay = parent.getItemAtPosition(position).toString()
                 txtdiasemana.setText(selectedDay.toString())
-
-                if (selectedDay != "Ninguno") {
-                    txtdiasemana.setText(selectedDay.toString())
-                } else {
-                    txtdiasemana.setText(tarea.diaSemana)
-
-                }
-
 
             }
 
