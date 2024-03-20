@@ -1,24 +1,38 @@
 package com.example.apptareas.activities
 
+import android.Manifest
+import android.app.AlarmManager
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.widget.AppCompatButton
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.apptareas.NotificationReceiver
 import com.example.apptareas.R
 import com.example.apptareas.activities.adapter.MainActivityModificar
 import com.example.apptareas.activities.adapter.TareasAdapter
 import com.example.apptareas.data.providers.Task
 import com.example.apptareas.data.providers.TaskDAO
-import org.w3c.dom.Text
+import java.util.Calendar
 
 
 class MainActivity : AppCompatActivity() {
+
+    companion object {
+        val NOTIFICATION_PERMISSION_REQUEST_CODE = 1001
+    }
 
 
     lateinit var recyclerView: RecyclerView
@@ -28,11 +42,16 @@ class MainActivity : AppCompatActivity() {
     lateinit var btnnueva:ImageButton
     lateinit var btnborratodo:ImageButton
     lateinit var btnborrarealizado:ImageButton
+    lateinit var prueba:ImageButton
     //lateinit var imagenpapelera:ImageButton
-
 
     val taskDAO = TaskDAO(this)
 
+
+
+    //alerta
+    private val CHANNEL_ID = "my_channel"
+    private val NOTIFICATION_ID = 1
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,10 +59,18 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
 
+            // Programar la notificación
+
+
         //var tarea: Task = Task(1, "Comprar el pan", false)
         //var tarea: Task = Task(1, "Comprar el periódico", true) // para tener algún dato al inicio
 
     }
+
+
+
+
+
 
     override fun onResume() {
         super.onResume()
@@ -55,6 +82,8 @@ class MainActivity : AppCompatActivity() {
 
 
     fun inicializar(){
+
+
 
         recyclerView = findViewById(R.id.recyclerView)
         //imagenpapelera=findViewById(R.id.imagenpapelera)
@@ -69,6 +98,24 @@ class MainActivity : AppCompatActivity() {
         //borrar todo
         btnborratodo=findViewById(R.id.btnborratodo)
         btnborrarealizado=findViewById(R.id.btnborrarealizado)
+        prueba=findViewById(R.id.prueba)
+
+        prueba.setOnClickListener(){
+            val permissionState =
+                ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+            // If the permission is not granted, request it.
+            // If the permission is not granted, request it.
+            if (permissionState == PackageManager.PERMISSION_DENIED) {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                    1
+                )
+            } else {
+                notificacion()
+                Toast.makeText(this, "notificacion", Toast.LENGTH_SHORT).show()
+            }
+        }
 
         btnnueva.setOnClickListener(){
            // LLamar a la otra pantalla
@@ -168,4 +215,58 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
 
     }
+    private fun notificacion() {
+
+            // Setear la alarma para el próximo lunes a las 13:05 AM
+            /*val calendar = Calendar.getInstance()
+            calendar.set(Calendar.DAY_OF_WEEK, Calendar.WEDNESDAY)
+            calendar.set(Calendar.HOUR_OF_DAY,10)
+            calendar.set(Calendar.MINUTE,1)
+            calendar.set(Calendar.SECOND, 0)
+            Log.i("NOTIFICACION", "PASA POR AQUI")
+
+            // Si hoy es lunes y ya pasó las 13:50 AM, programar la notificación para el próximo lunes
+            if (Calendar.getInstance().after(calendar)) {
+                calendar.add(Calendar.DATE, 7)
+            }
+
+            alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent)
+            */
+
+        createChannel()
+
+
+        val intent = Intent(applicationContext, NotificationReceiver::class.java)  // el NOTIFICATION_ID es unico puedo usar el de BD
+        val pendingIntent = PendingIntent.getBroadcast(
+            applicationContext,
+            NOTIFICATION_ID,
+            intent,
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+        )
+
+        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, Calendar.getInstance().timeInMillis + 10000, pendingIntent)
+    }
+
+
+
+    private fun createChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                "prueba",
+                "MySuperChannel",
+                NotificationManager.IMPORTANCE_DEFAULT
+            ).apply {
+                description = "SUSCRIBETE"
+            }
+
+            val notificationManager: NotificationManager =
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+            notificationManager.createNotificationChannel(channel)
+        }
+    }
+
+
 }
+

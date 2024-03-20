@@ -84,7 +84,7 @@ class MainActivityinsertar : AppCompatActivity() {
             }
             else
             {
-                Toast.makeText(this, "La tarea no puede ser nula", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "La tarea no puede estar vacía", Toast.LENGTH_SHORT).show()
             }
 
             }

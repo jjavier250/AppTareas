@@ -50,6 +50,12 @@
             android:layout_height="wrap_content"
             android:src="@drawable/papeleratodo"
             android:tooltipText="Borra toda la agenda"></ImageButton>
+        <ImageButton
+            android:id="@+id/prueba"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/papeleratodo"
+            android:tooltipText="Borra toda la agenda"></ImageButton>
 
     </LinearLayout>
 
