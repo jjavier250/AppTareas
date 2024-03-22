@@ -50,12 +50,15 @@
             android:layout_height="wrap_content"
             android:src="@drawable/papeleratodo"
             android:tooltipText="Borra toda la agenda"></ImageButton>
+
         <ImageButton
             android:id="@+id/prueba"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/papeleratodo"
-            android:tooltipText="Borra toda la agenda"></ImageButton>
+            android:layout_height="45dp"
+            android:src="@android:drawable/ic_popup_reminder"
+            android:tint="#3F51B5"
+            android:tooltipText="Activar notificaciones"></ImageButton>
+
 
     </LinearLayout>
 

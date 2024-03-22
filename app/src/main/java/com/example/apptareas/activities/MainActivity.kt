@@ -10,6 +10,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
@@ -43,6 +44,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var btnborratodo:ImageButton
     lateinit var btnborrarealizado:ImageButton
     lateinit var prueba:ImageButton
+    lateinit var editText:EditText
     //lateinit var imagenpapelera:ImageButton
 
     val taskDAO = TaskDAO(this)
@@ -112,8 +114,49 @@ class MainActivity : AppCompatActivity() {
                     1
                 )
             } else {
-                notificacion()
-                Toast.makeText(this, "notificacion", Toast.LENGTH_SHORT).show()
+
+                val builder = AlertDialog.Builder(this)
+
+                // Inflar el layout que contiene el EditText
+                val inflater = layoutInflater
+                val dialogLayout = inflater.inflate(R.layout.dialog_layout, null)
+                val editText = dialogLayout.findViewById<EditText>(R.id.editText)
+
+                // Establecer el título y el mensaje del AlertDialog
+                builder.setTitle("Activar notificaciones")
+                builder.setMessage("Indica el tiempo en horas para la alerta")
+
+                // Establecer el layout personalizado para el AlertDialog
+                builder.setView(dialogLayout)
+
+                // Configurar el botón "Aceptar"
+                builder.setPositiveButton("Aceptar") { dialog, which ->
+                    // Acción a realizar cuando se presiona el botón Aceptar
+                    val textoIngresado = editText.text.toString()
+                    // Aquí puedes hacer lo que necesites con el texto ingresado
+                    // Por ejemplo, convertirlo a un valor numérico y utilizarlo
+
+                    notificacion(textoIngresado.toInt())
+                    Toast.makeText(this, "notificacion a las $textoIngresado horas", Toast.LENGTH_SHORT).show()
+                    dialog.dismiss()
+
+
+                }
+
+                    // Configurar el botón "Cancelar"
+                builder.setNegativeButton("Cancelar") { dialog, which ->
+                    // Acción a realizar cuando se presiona el botón Cancelar
+                    // Por ejemplo, puedes realizar alguna acción o cerrar el diálogo
+                    dialog.dismiss()
+                }
+
+                // Mostrar AlertDialog
+                val dialog: AlertDialog = builder.create()
+                dialog.show()
+
+
+
+
             }
         }
 
@@ -215,7 +258,7 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
 
     }
-    private fun notificacion() {
+    private fun notificacion(horas:Int) {
 
             // Setear la alarma para el próximo lunes a las 13:05 AM
             /*val calendar = Calendar.getInstance()
@@ -245,7 +288,7 @@ class MainActivity : AppCompatActivity() {
         )
 
         val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, Calendar.getInstance().timeInMillis + 10000, pendingIntent)
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, Calendar.getInstance().timeInMillis + horas * 3600 * 1000, pendingIntent)
     }
 
 
