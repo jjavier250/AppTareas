@@ -34,11 +34,11 @@ class NotificationReceiver : BroadcastReceiver() {
 
         val notification = NotificationCompat.Builder(context, "prueba")
             .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setContentTitle("My title")
-            .setContentText("Esto es un ejemplo <3")
+            .setContentTitle("LA APP DE JAVI TIENE UNA NOTI")
+            .setContentText("Tienes una notificación pendiente")
             .setStyle(
                 NotificationCompat.BigTextStyle()
-                    .bigText("Holita holi Holita holi ")
+                    .bigText("Seguro que tienes alguna tarea que realizar y has activado el aviso")
             )
             .setContentIntent(pendingIntent)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
