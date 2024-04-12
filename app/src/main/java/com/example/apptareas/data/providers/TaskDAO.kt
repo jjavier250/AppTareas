@@ -138,4 +138,40 @@ class TaskDAO (context: Context) {
         return list
     }
 
+    @SuppressLint("Range")
+    fun findAlllike(nombre:String): List<Task> {
+        val db = databaseManager.writableDatabase
+
+        val cursor = db.query(
+            Task.TABLE_NAME,
+            Task.COLUMN_NAMES,
+            "${Task.COLUMN_NAME_TASK} like '%$nombre%'",
+            null,
+            null,
+            null,
+            null
+        )
+
+        var list: MutableList<Task> = mutableListOf()
+
+        while (cursor.moveToNext()) {
+            val id = cursor.getInt(cursor.getColumnIndex(DatabaseManager.COLUMN_NAME_ID))
+            val taskName = cursor.getString(cursor.getColumnIndex(Task.COLUMN_NAME_TASK))
+            val done = cursor.getInt(cursor.getColumnIndex(Task.COLUMN_NAME_DONE)) == 1
+            val taskdescripcion = cursor.getString(cursor.getColumnIndex(Task.COLUMN_NAME_DESCRIPCION))
+            val diaSemana=cursor.getString(cursor.getColumnIndex(Task.COLUMN_NAME_DIASEMANA))
+            //Log.i("DATABASE", "$id -> Task: $taskName, Done: $done")
+
+            val task: Task = Task(id, taskName, done,taskdescripcion,diaSemana)
+            list.add(task)
+
+        }
+
+        cursor.close()
+        db.close()
+
+        return list
+
+    }
+
 }

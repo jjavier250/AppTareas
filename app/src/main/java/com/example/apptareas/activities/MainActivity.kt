@@ -10,6 +10,8 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
@@ -230,6 +232,42 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    // ++++++++   MENU BUSCAR  +++++++++++++++
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        menuInflater.inflate(R.menu.main_menu, menu)
+        //llamamos a la funcion para buscar
+       buscarTarea(menu?.findItem(R.id.menu_buscar))
+
+        return true
+    }
+
+
+
+    private fun buscarTarea(searchItem: MenuItem?) {
+        if (searchItem != null) {
+            var searchView = searchItem.actionView as androidx.appcompat.widget.SearchView
+
+            searchView.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    return false
+                }
+
+                override fun onQueryTextChange(query: String?): Boolean {
+                    if (query != null) {
+                        // hacer algo
+
+                        listaTareas = taskDAO.findAlllike(query).toMutableList()
+
+                        adapter.updateData(listaTareas)
+                    }
+                    return true
+                }
+            })
+        }
+    }
+
+
     private fun llamarPapeleraClick(it: Int) {
 
         var task: Task = listaTareas[it]
@@ -279,7 +317,7 @@ class MainActivity : AppCompatActivity() {
         createChannel()
 
 
-        val intent = Intent(applicationContext, NotificationReceiver::class.java)  // el NOTIFICATION_ID es unico puedo usar el de BD
+        val intent = Intent(applicationContext,NotificationReceiver::class.java)  // el NOTIFICATION_ID es unico puedo usar el de BD
         val pendingIntent = PendingIntent.getBroadcast(
             applicationContext,
             NOTIFICATION_ID,
