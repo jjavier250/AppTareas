@@ -95,12 +95,7 @@
             >
         </Spinner>
 
-        <Switch
-            android:id="@+id/switch1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Noti" />
+
 
     </LinearLayout>
     <LinearLayout
@@ -115,10 +110,91 @@
 
         </EditText>
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="    "
+            android:textSize="20dp"
+            android:textStyle="bold"
+            >
+        </TextView>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Notificación:      "
+            android:textSize="20dp"
+            android:textStyle="bold"
+            >
+        </TextView>
+
+        <Switch
+            android:id="@+id/switch1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:switchTextAppearance="@style/TextAppearance.AppCompat.Large"
+            android:text="Noti   "
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#74DBE8"
+            android:text=""
+            android:textSize="14dp"
+            android:textStyle="bold"></TextView>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="13dp"
+            android:textStyle="bold"
+            >
+        </TextView>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+
         android:gravity="center">
 
         <androidx.appcompat.widget.AppCompatButton
@@ -136,7 +212,7 @@
             android:id="@+id/btncancelar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="CANCELAR"
+            android:text="volver"
             android:textAlignment="center"
             android:backgroundTint="@color/purple_200"
             android:layout_gravity="center_horizontal">

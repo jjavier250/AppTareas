@@ -77,7 +77,7 @@ class MainActivityinsertar : AppCompatActivity() {
         btngrabatarea.setOnClickListener(){
             // Insertar
             if (!txtnuevatarea.text.toString().isEmpty()) {
-                var tarea: Task = Task(-1, txtnuevatarea.text.toString(), false, txtdescripcion.text.toString(), txtdiasemana.text.toString())
+                var tarea: Task = Task(-1, txtnuevatarea.text.toString(), false, txtdescripcion.text.toString(), txtdiasemana.text.toString(),false)
                 taskDAO.insert(tarea)
 
                 finish()

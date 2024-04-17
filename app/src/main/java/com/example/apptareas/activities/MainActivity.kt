@@ -317,7 +317,7 @@ class MainActivity : AppCompatActivity() {
         createChannel()
 
 
-        val intent = Intent(applicationContext,NotificationReceiver::class.java)  // el NOTIFICATION_ID es unico puedo usar el de BD
+        val intent = Intent(applicationContext,NotificationReceiver()::class.java)  // el NOTIFICATION_ID es unico puedo usar el de BD
         val pendingIntent = PendingIntent.getBroadcast(
             applicationContext,
             NOTIFICATION_ID,

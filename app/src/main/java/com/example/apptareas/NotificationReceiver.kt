@@ -13,12 +13,13 @@ import androidx.core.app.NotificationManagerCompat
 import com.example.apptareas.R
 import com.example.apptareas.activities.MainActivity
 
-class NotificationReceiver : BroadcastReceiver() {
+class NotificationReceiver() : BroadcastReceiver() {
 
     companion object{
         const val NOTIFICATION_ID = 1
     }
 
+     var textonoti:String="Tienes alguna tarea pendiente"
     override fun onReceive(context: Context, p1: Intent?) {
         createSimpleNotification(context)
     }
@@ -35,7 +36,7 @@ class NotificationReceiver : BroadcastReceiver() {
         val notification = NotificationCompat.Builder(context, "prueba")
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentTitle("LA APP DE JAVI TIENE UNA NOTI")
-            .setContentText("Tienes una notificación pendiente")
+            .setContentText(textonoti)
             .setStyle(
                 NotificationCompat.BigTextStyle()
                     .bigText("Seguro que tienes alguna tarea que realizar y has activado el aviso")

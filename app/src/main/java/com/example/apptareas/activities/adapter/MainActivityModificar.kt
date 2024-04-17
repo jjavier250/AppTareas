@@ -49,6 +49,7 @@ class MainActivityModificar : AppCompatActivity() {
 
 
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_modificar)
@@ -93,6 +94,9 @@ class MainActivityModificar : AppCompatActivity() {
         txtdiasemana.setText(tarea.diaSemana)
         // añadimos marcado a la lista de los dias de la semana del que tenemos grabado en BD
         spinermod.setSelection(diasSemana.indexOf(tarea.diaSemana))
+        switch1.isChecked=tarea.noti
+
+
 
 
        switch1.setOnClickListener(){
@@ -119,7 +123,7 @@ class MainActivityModificar : AppCompatActivity() {
             tarea.tarea = txtmodificatarea.text.toString()
             tarea.descripcion = txtdescripcion.text.toString()
             tarea.diaSemana = txtdiasemana.text.toString()
-
+            tarea.noti=noti
 
             taskDAO.update(tarea)
 
@@ -200,10 +204,10 @@ class MainActivityModificar : AppCompatActivity() {
         createChannel(tarea.id)
 
 
-        val intent = Intent(applicationContext, NotificationReceiver::class.java)  // el NOTIFICATION_ID es unico puedo usar el de BD
+        val intent = Intent(applicationContext, NotificationReceiver()::class.java)  // el NOTIFICATION_ID es unico puedo usar el de BD
         val pendingIntent = PendingIntent.getBroadcast(
             applicationContext,
-            NOTIFICATION_ID,
+            tarea.id,
             intent,
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )

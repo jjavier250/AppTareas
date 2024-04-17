@@ -1,5 +1,6 @@
 package com.example.apptareas.activities.adapter
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -56,6 +57,10 @@ class TareasAdapter(private var dataSet: List<Task> =listOf(), val onClickListen
         viewHolder.checkhecho.isChecked = tarea.hecho
 
 
+        if (dataSet[position].noti==true){
+           //viewHolder.itemView.setBackgroundColor(Color.CYAN)
+            viewHolder.itemView.setBackgroundColor(Color.argb(35, 0, 255, 255))
+        }
 
     }
 
