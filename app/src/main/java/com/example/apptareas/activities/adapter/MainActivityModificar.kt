@@ -12,6 +12,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Vibrator
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -53,6 +54,8 @@ class MainActivityModificar : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_modificar)
+
+        var vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
 
         var noti:Boolean=false
 
@@ -103,6 +106,7 @@ class MainActivityModificar : AppCompatActivity() {
 
             if (switch1.isChecked) {
                 noti=true
+                vibrator.vibrate(500) // vibracion
             }
             else
             {
