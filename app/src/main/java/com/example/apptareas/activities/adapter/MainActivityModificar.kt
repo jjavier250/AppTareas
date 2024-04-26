@@ -9,6 +9,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -17,6 +18,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.Switch
 import android.widget.TextView
@@ -46,6 +48,7 @@ class MainActivityModificar : AppCompatActivity() {
     lateinit var spinermod:Spinner
     lateinit var  selectedDay:String
     lateinit var switch1:Switch
+    lateinit var imagenlapiz:ImageView
 
 
 
@@ -67,6 +70,7 @@ class MainActivityModificar : AppCompatActivity() {
         txtdiasemana = findViewById(R.id.txtdiasemana)
         btncancelar = findViewById(R.id.btncancelar)
         spinermod = findViewById(R.id.spinermod)
+        imagenlapiz = findViewById(R.id.imagenlapiz)
         switch1=findViewById(R.id.switch1) // notificación
 
         // llenar el spinner
@@ -107,10 +111,13 @@ class MainActivityModificar : AppCompatActivity() {
             if (switch1.isChecked) {
                 noti=true
                 vibrator.vibrate(500) // vibracion
+                imagenlapiz.setColorFilter(Color.BLUE)
+
             }
             else
             {
                 noti=false
+                imagenlapiz.setColorFilter(Color.BLACK)
             }
         }
 

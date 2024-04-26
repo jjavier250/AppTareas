@@ -149,7 +149,13 @@
             android:layout_weight="5"
             android:switchTextAppearance="@style/TextAppearance.AppCompat.Large"
             android:text="Noti   "
-            android:textSize="14sp" />
+            android:textSize="16sp" />
+        <ImageView
+            android:id="@+id/imagenlapiz"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/lapiz" />
+
     </LinearLayout>
 
     <LinearLayout

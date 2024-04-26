@@ -9,8 +9,7 @@
         android:id="@+id/imagenlapiz"
         android:layout_width="30dp"
         android:layout_height="50dp"
-        android:src="@drawable/lapiz"
-        />
+        android:src="@drawable/lapiz" />
     <!--<TextView
         android:id="@+id/txtidtarea"
         android:layout_width="10dp"

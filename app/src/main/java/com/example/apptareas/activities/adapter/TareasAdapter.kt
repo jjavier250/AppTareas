@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.apptareas.R
@@ -20,6 +21,7 @@ class TareasAdapter(private var dataSet: List<Task> =listOf(), val onClickListen
         val txttarea: TextView
         val checkhecho: CheckBox
         val imagenpapelera:ImageButton
+        val imagenlapiz:ImageView
 
         //val txtidtarea : TextView
 
@@ -29,7 +31,9 @@ class TareasAdapter(private var dataSet: List<Task> =listOf(), val onClickListen
             txttarea = view.findViewById(R.id.txttarea)  // hace referencia el textview que esta en item_tareas
             checkhecho = view.findViewById(R.id.checkhecho)
             imagenpapelera=view.findViewById(R.id.imagenpapelera)
+            imagenlapiz=view.findViewById(R.id.imagenlapiz)
             //txtidtarea=view.findViewById(R.id.txtidtarea)
+
         }
     }
 
@@ -60,6 +64,8 @@ class TareasAdapter(private var dataSet: List<Task> =listOf(), val onClickListen
         if (dataSet[position].noti==true){
            //viewHolder.itemView.setBackgroundColor(Color.CYAN)
             viewHolder.itemView.setBackgroundColor(Color.argb(35, 0, 255, 255))
+            viewHolder.txttarea.setTextColor(Color.BLUE)
+            viewHolder.imagenlapiz.setColorFilter(Color.BLUE)
         }
 
     }
