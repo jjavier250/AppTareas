@@ -1,7 +1,6 @@
 package com.example.apptareas.activities.adapter
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.app.AlarmManager
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -10,30 +9,35 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
+import android.media.AudioManager
+import android.media.ToneGenerator
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Vibrator
+import android.text.format.DateUtils.isToday
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.CalendarView
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.Switch
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.apptareas.NotificationReceiver
-import com.example.apptareas.NotificationReceiver.Companion.NOTIFICATION_ID
 import com.example.apptareas.R
 
 import com.example.apptareas.data.providers.Task
 import com.example.apptareas.data.providers.TaskDAO
+import com.example.apptareas.globalVariable
+import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Locale
 
 
 class MainActivityModificar : AppCompatActivity() {
@@ -49,7 +53,15 @@ class MainActivityModificar : AppCompatActivity() {
     lateinit var  selectedDay:String
     lateinit var switch1:Switch
     lateinit var imagenlapiz:ImageView
+    lateinit var calendarView:CalendarView
+    lateinit var spinertiempo:Spinner
+    lateinit var textaviso:TextView
 
+
+    var fechaAlarma:Long=-1
+    var fechaAlarmaP:Long=-1
+    var formatofecha:String=""
+    var tiemposeleccionado:String=""
 
 
 
@@ -62,6 +74,7 @@ class MainActivityModificar : AppCompatActivity() {
 
         var noti:Boolean=false
 
+
         taskDAO = TaskDAO(this)
 
         txtmodificatarea = findViewById(R.id.txtmodificatarea)
@@ -72,6 +85,13 @@ class MainActivityModificar : AppCompatActivity() {
         spinermod = findViewById(R.id.spinermod)
         imagenlapiz = findViewById(R.id.imagenlapiz)
         switch1=findViewById(R.id.switch1) // notificación
+        calendarView=findViewById(R.id.calendarView)
+        spinertiempo=findViewById(R.id.spinertiempo)
+        textaviso=findViewById(R.id.textaviso)
+
+
+        spinertiempo.visibility=View.GONE
+        textaviso.visibility=View.GONE
 
         // llenar el spinner
         val diasSemana = arrayOf(
@@ -89,7 +109,23 @@ class MainActivityModificar : AppCompatActivity() {
         // Asigna el adaptador al Spinner
         spinermod.adapter = adapter
 
+        val tiempo = arrayOf(
+            "15 minutos",
+            "30 minutos",
+            "1 hora",
+            "2 horas",
+            "3 horas",
+            "4 horas",
+            "5 horas"
+        )
+        val adaptertiempo = ArrayAdapter(this, android.R.layout.simple_spinner_item, tiempo)
+        adaptertiempo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        // Asigna el adaptador al Spinner
+        spinertiempo.adapter = adaptertiempo
+
+
         // fin llenar spinner
+
 
         //buscamos el id en BD nos devuelve de tipo tarea
         var id_tarea: Int = intent.getIntExtra("ID_TABLA", -1)
@@ -102,7 +138,38 @@ class MainActivityModificar : AppCompatActivity() {
         // añadimos marcado a la lista de los dias de la semana del que tenemos grabado en BD
         spinermod.setSelection(diasSemana.indexOf(tarea.diaSemana))
         switch1.isChecked=tarea.noti
+        // para mostrar o no elcalendario si viene con el valor true o false de la base de datos
+        if (tarea.noti){
+            calendarView.visibility=View.VISIBLE
+        }
+        else{
+            calendarView.visibility=View.GONE
+        }
 
+
+        calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
+            val calendar = Calendar.getInstance()
+            calendar.set(year, month, dayOfMonth)
+            val dateInMillis = calendar.timeInMillis
+            val formattedDate = convertirFecha(dateInMillis)
+            formatofecha=formattedDate
+
+
+            if (isToday(dateInMillis)) {
+               // Toast.makeText(this, "Has seleccionado el día de hoy.", Toast.LENGTH_SHORT).show()
+                spinertiempo.visibility=View.VISIBLE
+                textaviso.visibility=View.VISIBLE
+                fechaAlarma=dateInMillis
+                fechaAlarmaP=fechaAlarma
+            }
+            else{
+                fechaAlarma=dateInMillis
+                fechaAlarmaP=fechaAlarma
+            }
+
+
+            calendarView.visibility=View.GONE
+        }
 
 
 
@@ -112,12 +179,13 @@ class MainActivityModificar : AppCompatActivity() {
                 noti=true
                 vibrator.vibrate(500) // vibracion
                 imagenlapiz.setColorFilter(Color.BLUE)
-
+                calendarView.visibility=View.VISIBLE
             }
             else
             {
                 noti=false
                 imagenlapiz.setColorFilter(Color.BLACK)
+                calendarView.visibility=View.GONE
             }
         }
 
@@ -154,8 +222,9 @@ class MainActivityModificar : AppCompatActivity() {
 
                         val textoIngresado = txtmodificatarea.text.toString()
 
+                        sonido()
                         notificacion(textoIngresado.toString())
-                        Toast.makeText(this, "notificación: $textoIngresado ", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "notificación: $textoIngresado", Toast.LENGTH_SHORT).show()
                         //llamar a la funcion notificacion y pasar parametro de el texto
 
                 }
@@ -186,9 +255,72 @@ class MainActivityModificar : AppCompatActivity() {
 
             }
 
+
+
             override fun onNothingSelected(parent: AdapterView<*>) {
                 // Opcional: Si no hay nada seleccionado
                 txtdiasemana.setText(tarea.diaSemana)
+            }
+        })
+
+
+        spinertiempo.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                var horas:Int=0
+                // Maneja la selección del usuario aquí
+                tiemposeleccionado = parent.getItemAtPosition(position).toString()
+
+                fechaAlarmaP=-1
+
+                if (tiemposeleccionado=="15 minutos"){
+                    fechaAlarmaP=fechaAlarma + 900000
+
+                }
+                if (tiemposeleccionado=="30 minutos") {
+                    fechaAlarmaP=fechaAlarma + 1800000
+
+                }
+                if (tiemposeleccionado=="1 hora") {
+                    horas=1
+                    fechaAlarmaP=fechaAlarma + horas * 3600 * 1000
+
+                }
+                if (tiemposeleccionado=="2 horas") {
+                    horas=2
+                    fechaAlarmaP=fechaAlarma + horas * 3600 * 1000
+
+
+                }
+                if (tiemposeleccionado=="3 horas") {
+                    horas=3
+                    fechaAlarmaP=fechaAlarma + horas * 3600 * 1000
+
+
+                }
+                if (tiemposeleccionado=="4 horas") {
+                    horas=4
+                    fechaAlarmaP=fechaAlarma + horas * 3600 * 1000
+
+
+                }
+                if (tiemposeleccionado=="5 horas") {
+                    horas=5
+                    fechaAlarmaP=fechaAlarma + horas * 3600 * 1000
+
+
+                }
+
+            }
+
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // Opcional: Si no hay nada seleccionado
+
             }
         })
 
@@ -196,26 +328,13 @@ class MainActivityModificar : AppCompatActivity() {
 
     private fun notificacion(texto:String) {
 
-        // Setear la alarma para el próximo lunes a las 13:05 AM
-        /*val calendar = Calendar.getInstance()
-        calendar.set(Calendar.DAY_OF_WEEK, Calendar.WEDNESDAY)
-        calendar.set(Calendar.HOUR_OF_DAY,10)
-        calendar.set(Calendar.MINUTE,1)
-        calendar.set(Calendar.SECOND, 0)
-        Log.i("NOTIFICACION", "PASA POR AQUI")
-
-        // Si hoy es lunes y ya pasó las 13:50 AM, programar la notificación para el próximo lunes
-        if (Calendar.getInstance().after(calendar)) {
-            calendar.add(Calendar.DATE, 7)
-        }
-
-        alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent)
-        */
 
         createChannel(tarea.id)
 
 
         val intent = Intent(applicationContext, NotificationReceiver()::class.java)  // el NOTIFICATION_ID es unico puedo usar el de BD
+        intent.putExtra("texto", tarea.tarea)
+        globalVariable = tarea.tarea
         val pendingIntent = PendingIntent.getBroadcast(
             applicationContext,
             tarea.id,
@@ -224,7 +343,8 @@ class MainActivityModificar : AppCompatActivity() {
         )
 
         val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, Calendar.getInstance().timeInMillis , pendingIntent)
+       // alarmManager.setExact(AlarmManager.RTC_WAKEUP, Calendar.getInstance().timeInMillis , pendingIntent)
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP,fechaAlarmaP, pendingIntent)
     }
 
 
@@ -245,7 +365,20 @@ class MainActivityModificar : AppCompatActivity() {
             notificationManager.createNotificationChannel(channel)
         }
     }
+    fun sonido(){
+        var toneGenerator =
+            ToneGenerator(AudioManager.STREAM_ALARM, 100) // El segundo parámetro es el volumen
 
+        // Lanzar un pitido
+        toneGenerator.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD, 800)
+    }
+
+    fun convertirFecha(millis: Long): String {
+        val formatter = SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault())
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = millis
+        return formatter.format(calendar.time)
+    }
 
     }
 

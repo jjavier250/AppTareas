@@ -28,6 +28,7 @@
             android:name=".NotificationReceiver"
             android:enabled="true">
         </receiver>
+
         <activity
             android:name=".activities.adapter.MainActivityModificar"
             android:exported="false" />

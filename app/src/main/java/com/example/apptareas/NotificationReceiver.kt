@@ -13,18 +13,21 @@ import androidx.core.app.NotificationManagerCompat
 import com.example.apptareas.R
 import com.example.apptareas.activities.MainActivity
 
+var globalVariable: String = ""
 class NotificationReceiver() : BroadcastReceiver() {
 
     companion object{
         const val NOTIFICATION_ID = 1
+
     }
 
      var textonoti:String="Tienes alguna tarea pendiente"
     override fun onReceive(context: Context, p1: Intent?) {
-        createSimpleNotification(context)
+        val message=p1?.getStringExtra(globalVariable)
+        createSimpleNotification(context,globalVariable)
     }
 
-    private fun createSimpleNotification(context: Context) {
+    private fun createSimpleNotification(context: Context,textobignoti:String) {
         Log.i("NOTI", "Se ha recibido una notificación")
         val intent = Intent(context, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -34,12 +37,12 @@ class NotificationReceiver() : BroadcastReceiver() {
         val pendingIntent: PendingIntent = PendingIntent.getActivity(context, 0, intent, flag)
 
         val notification = NotificationCompat.Builder(context, "prueba")
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setSmallIcon(R.drawable.portapapeles)
             .setContentTitle("LA APP DE JAVI TIENE UNA NOTI")
             .setContentText(textonoti)
             .setStyle(
                 NotificationCompat.BigTextStyle()
-                    .bigText("Seguro que tienes alguna tarea que realizar y has activado el aviso")
+                    .bigText(textobignoti)
             )
             .setContentIntent(pendingIntent)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)

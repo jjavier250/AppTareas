@@ -65,6 +65,7 @@ class TareasAdapter(private var dataSet: List<Task> =listOf(), val onClickListen
            //viewHolder.itemView.setBackgroundColor(Color.CYAN)
             viewHolder.itemView.setBackgroundColor(Color.argb(35, 0, 255, 255))
             viewHolder.txttarea.setTextColor(Color.BLUE)
+            viewHolder.txttarea.text=tarea.tarea
             viewHolder.imagenlapiz.setColorFilter(Color.BLUE)
         }
 
